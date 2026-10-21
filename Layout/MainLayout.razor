@@ -1,0 +1,56 @@
+
+@inherits LayoutComponentBase
+@implements IDisposable
+@inject IJSRuntime JS
+@inject HakanBeratDemircan.Services.LanguageService Language
+
+<div class="site-container">
+
+    <header class="site-header">
+        <div class="header-content">
+
+            <a href="/" class="site-logo">
+                Hakan Berat Demircan
+            </a>
+
+            <NavMenu />
+
+        </div>
+    </header>
+
+    <main class="site-main">
+        @Body
+    </main>
+
+    <footer class="site-footer"><div class="footer-inner"><p>© @DateTime.Now.Year Hakan Berat Demircan</p><nav class="footer-socials" aria-label="@Language.Translate("SocialProfiles")"><a class="" href="https://www.linkedin.com/in/hakan-berat-demircan/" target="_blank" rel="noopener noreferrer">LinkedIn</a><a class="" href="https://www.behance.net/hakanberatdemircan" target="_blank" rel="noopener noreferrer">Behance</a><a class="" href="https://www.instagram.com/hakanbdemircan/" target="_blank" rel="noopener noreferrer">Instagram</a><a class="" href="https://www.youtube.com/@@divehubcyprus" target="_blank" rel="noopener noreferrer">YouTube · Dive Hub</a><a class="" href="https://www.instagram.com/divehub/" target="_blank" rel="noopener noreferrer">Instagram · Dive Hub</a><a class="" href="http://dive-hub.com/en/" target="_blank" rel="noopener noreferrer">Dive Hub</a></nav></div></footer>
+
+</div>
+
+@code {
+    protected override void OnInitialized() => Language.LanguageChanged += OnLanguageChanged;
+    private void OnLanguageChanged() => _ = InvokeAsync(async () =>
+    {
+        await JS.InvokeVoidAsync("portfolio.setLanguage", Language.CurrentLanguage);
+        StateHasChanged();
+    });
+    public void Dispose() => Language.LanguageChanged -= OnLanguageChanged;
+
+    protected override async Task OnAfterRenderAsync(
+        bool firstRender)
+    {
+        if (firstRender)
+        {
+            var savedLanguage =
+                await JS.InvokeAsync<string?>(
+                    "localStorage.getItem",
+                    "portfolio-language");
+
+            if (savedLanguage == "tr" ||
+                savedLanguage == "en")
+            {
+                Language.SetLanguage(savedLanguage);
+            }
+            await JS.InvokeVoidAsync("portfolio.setLanguage", Language.CurrentLanguage);
+        }
+    }
+}

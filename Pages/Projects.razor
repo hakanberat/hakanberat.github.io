@@ -1,0 +1,185 @@
+@page "/projects"
+@using System.Linq
+@inject HakanBeratDemircan.Services.LanguageService Language
+@implements IDisposable
+
+<PageTitle>@Language.Translate("Projects") | Hakan Berat Demircan</PageTitle>
+
+<section class="software-projects">
+    <header class="projects-hero">
+        <p class="projects-eyebrow">@Language.Translate("SoftwarePortfolioLabel")</p>
+        <div class="projects-title-row">
+            <h1>@Language.Translate("Projects")</h1>
+            <span class="projects-total" aria-label="Total projects">@projects.Count</span>
+        </div>
+        <p class="projects-intro">@Language.Translate("ProjectsIntro")</p>
+    </header>
+
+    <div class="projects-toolbar">
+        <div class="projects-search-wrapper">
+            <label class="screen-reader-only" for="projects-search">
+                @Language.Translate("SearchProjects")
+            </label>
+            <input id="projects-search"
+                   class="projects-search"
+                   type="search"
+                   placeholder="@Language.Translate("SearchPlaceholder")"
+                   @bind="searchTerm"
+                   @bind:event="oninput" />
+        </div>
+
+        <div class="project-filters" role="group"
+             aria-label="@Language.Translate("ProjectCategories")">
+            @foreach (var category in categories)
+            {
+                <button type="button"
+                        class="project-filter @(selectedCategory == category ? "selected" : "")"
+                        aria-pressed="@(selectedCategory == category)"
+                        @onclick="() => SelectCategory(category)">
+                    @Language.Translate("Category_" + category)
+                </button>
+            }
+        </div>
+    </div>
+
+    <p class="projects-results" aria-live="polite">
+        @FilteredProjects.Count() @Language.Translate("ProjectResults")
+    </p>
+
+    @if (!FilteredProjects.Any())
+    {
+        <div class="projects-empty">
+            <p>@Language.Translate("NoProjectsFound")</p>
+            <button type="button" @onclick="ClearFilters">
+                @Language.Translate("ClearFilters")
+            </button>
+        </div>
+    }
+    else
+    {
+        <div class="projects-grid">
+            @foreach (var project in FilteredProjects)
+            {
+                <article class="software-project-card">
+                    <div class="project-topline">
+                        <span class="project-code-mark" aria-hidden="true">&lt;/&gt;</span>
+                        <span class="project-category">
+                            @Language.Translate("Category_" + project.Category)
+                        </span>
+                    </div>
+
+                    <div class="project-meta">
+                        <span class="project-year">@project.Year</span>
+                        @if (project.Featured)
+                        {
+                            <span class="project-featured">
+                                @Language.Translate("FeaturedProject")
+                            </span>
+                        }
+                    </div>
+
+                    <h2>@project.Name</h2>
+                    <p class="project-summary">
+                        @Language.Translate(project.DescriptionKey)
+                    </p>
+
+                    <div class="project-tech-list">
+                        @foreach (var technology in project.Technologies)
+                        {
+                            <span class="project-tech">@technology</span>
+                        }
+                    </div>
+
+                    <a class="project-github"
+                       href="@project.GitHubUrl"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        @Language.Translate("ViewRepository")
+                        <span aria-hidden="true">↗</span>
+                    </a>
+                </article>
+            }
+        </div>
+    }
+</section>
+
+@code {
+    private string searchTerm = string.Empty;
+    private string selectedCategory = "all";
+
+    private readonly string[] categories =
+    {
+        "all", "web", "pwa", "desktop", "mobile", "legacy"
+    };
+
+    private readonly List<PortfolioProject> projects = new()
+    {
+        new("LifeDeck", "pwa", "LifeDeckDesc", 2026, true,
+            new[] { ".NET 10", "Blazor WebAssembly", "PWA", "REST API", "localStorage" },
+            "https://github.com/hakanberat/LifeDeck"),
+
+        new("Scuba Diving Marketplace", "web", "DiveMarketplaceDesc", 2026, true,
+            new[] { ".NET 10", "ASP.NET Core MVC", "Dapper", "SQL Server" },
+            "https://github.com/hakanberat/Scuba-Diving-Marketplace"),
+
+        new("Dive Center Management System — Web", "web", "DiveCenterManagerDesc", 2026, true,
+            new[] { ".NET 10", "ASP.NET Core MVC", "Dapper", "SQL Server" },
+            "https://github.com/hakanberat/Dive-Center-Management-System"),
+
+        new("Dive Center Management System — Desktop", "desktop", "DesktopDiveCenterDesc", 2026, false,
+            new[] { ".NET 10", "WPF", "MVVM", "EF Core", "SQLite" },
+            "https://github.com/hakanberat/Desktop-Dive-Center-Management-System"),
+
+        new("DiveHub Logbook", "mobile", "DiveHubLogbookDesc", 2026, false,
+            new[] { ".NET 10", ".NET MAUI", "MVVM", "SQLite" },
+            "https://github.com/hakanberat/DiveHub-Logbook-MAUI"),
+
+        new("Personal Finance Tracker", "mobile", "PersonalAccountingDesc", 2026, false,
+            new[] { ".NET 10", ".NET MAUI", "SQLite" },
+            "https://github.com/hakanberat/Personal-Finance-Tracker-MAUI"),
+
+        new("EMU SCT Mobile App — Master's Project", "legacy", "EmuSctDesc", 2014, false,
+            new[] { "Java", "Android", "PHP", "MySQL" },
+            "https://github.com/hakanberat/EMU-SCT-MobileApp-Legacy"),
+
+        new("DiveHub Android — Legacy", "legacy", "DiveHubLegacyDesc", 2014, false,
+            new[] { "Java", "Android", "SQLite" },
+            "https://github.com/hakanberat/DiveHub-Android-Legacy")
+    };
+
+    private IEnumerable<PortfolioProject> FilteredProjects =>
+        projects.Where(project =>
+            (selectedCategory == "all" || project.Category == selectedCategory) &&
+            (string.IsNullOrWhiteSpace(searchTerm) ||
+             project.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+             Language.Translate(project.DescriptionKey)
+                 .Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+             project.Technologies.Any(technology =>
+                 technology.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))));
+
+    private void SelectCategory(string category) => selectedCategory = category;
+
+    private void ClearFilters()
+    {
+        selectedCategory = "all";
+        searchTerm = string.Empty;
+    }
+
+    protected override void OnInitialized()
+    {
+        Language.LanguageChanged += OnLanguageChanged;
+    }
+
+    private void OnLanguageChanged() => _ = InvokeAsync(StateHasChanged);
+
+    public void Dispose() => Language.LanguageChanged -= OnLanguageChanged;
+
+    private sealed record PortfolioProject(
+        string Name,
+        string Category,
+        string DescriptionKey,
+        int Year,
+        bool Featured,
+        string[] Technologies,
+        string GitHubUrl);
+}

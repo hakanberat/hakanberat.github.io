@@ -1,0 +1,112 @@
+﻿@using Microsoft.AspNetCore.Components.Routing
+@inject IJSRuntime JS
+@inject HakanBeratDemircan.Services.LanguageService Language
+@implements IDisposable
+
+<button class="menu-toggle"
+        type="button"
+        aria-label="Toggle navigation"
+        aria-controls="portfolio-navigation"
+        aria-expanded="@menuOpen"
+        @onclick="ToggleMenu">
+    ☰
+</button>
+
+<nav id="portfolio-navigation"
+     class="portfolio-nav @(menuOpen ? "open" : "")">
+
+    <NavLink href="/" Match="NavLinkMatch.All"
+             @onclick="CloseMenu">
+        @Language.Translate("Home")
+    </NavLink>
+
+    <NavLink href="/projects" @onclick="CloseMenu">
+        @Language.Translate("Projects")
+    </NavLink>
+
+    <NavLink href="/experience" @onclick="CloseMenu">
+        @Language.Translate("Experience")
+    </NavLink>
+
+    <NavLink href="/research" @onclick="CloseMenu">
+        @Language.Translate("Research")
+    </NavLink>
+
+    <NavLink href="/creative" @onclick="CloseMenu">
+        @Language.Translate("Creative")
+    </NavLink>
+
+    <NavLink href="/awards" @onclick="CloseMenu">
+        @Language.Translate("Awards")
+    </NavLink>
+
+    <NavLink href="/contact" @onclick="CloseMenu">
+        @Language.Translate("Contact")
+    </NavLink>
+
+    <div class="language-switch">
+
+        <button type="button"
+                class="lang-button @(Language.CurrentLanguage == "en" ? "active" : "")"
+                aria-pressed="@(Language.CurrentLanguage == "en")"
+                @onclick="SetEnglish">
+            EN
+        </button>
+
+        <button type="button"
+                class="lang-button @(Language.CurrentLanguage == "tr" ? "active" : "")"
+                aria-pressed="@(Language.CurrentLanguage == "tr")"
+                @onclick="SetTurkish">
+            TR
+        </button>
+
+    </div>
+
+</nav>
+
+@code {
+    private bool menuOpen = false;
+
+    protected override void OnInitialized()
+    {
+        Language.LanguageChanged += OnLanguageChanged;
+    }
+
+    private void ToggleMenu()
+    {
+        menuOpen = !menuOpen;
+    }
+
+    private void CloseMenu()
+    {
+        menuOpen = false;
+    }
+
+    
+private async Task SetEnglish()
+{
+    await JS.InvokeVoidAsync("localStorage.setItem",
+        "portfolio-language", "en");
+
+    Language.SetLanguage("en");
+}
+
+private async Task SetTurkish()
+{
+    await JS.InvokeVoidAsync("localStorage.setItem",
+        "portfolio-language", "tr");
+
+    Language.SetLanguage("tr");
+}
+
+
+    private void OnLanguageChanged()
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        Language.LanguageChanged -= OnLanguageChanged;
+    }
+}

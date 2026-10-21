@@ -1,0 +1,16 @@
+@page "/research"
+@inject HakanBeratDemircan.Services.LanguageService Language
+@implements IDisposable
+
+<PageTitle>@Language.Translate("Research") | Hakan Berat Demircan</PageTitle>
+<section class="page-intro"><h1>@Language.Translate("Research")</h1><p class="hero-description">@Language.Translate("ResearchIntro")</p></section>
+<section aria-labelledby="PublicationsHeading"><h2 id="PublicationsHeading">@Language.Translate("PublicationsHeading")</h2><div class="highlights"><article class="highlight-card"><h3>@Language.Translate("PublicationTitle")</h3><p>Demircan, H. B., Ozturen, A., Ali, L., Ali, F., &amp; Irani, F.</p><p>@Language.Translate("PublicationDetails")</p><p><a class="text-link" href="https://doi.org/10.1108/JHTT-09-2024-0608" target="_blank" rel="noopener noreferrer">@Language.Translate("ReadPublication")</a></p><p><a class="text-link" href="https://i-rep.emu.edu.tr/items/d831e82d-e467-4c7e-9c0c-733509c0593d" target="_blank" rel="noopener noreferrer">@Language.Translate("UniversityRecord")</a></p></article><article class="highlight-card"><h3>@Language.Translate("ConferenceTitle")</h3><p>@Language.Translate("ConferenceDetails")</p></article></div></section>
+<section aria-labelledby="ResearchProjectsHeading"><h2 id="ResearchProjectsHeading">@Language.Translate("ResearchProjectsHeading")</h2><div class="highlights"><article class="highlight-card"><h3>@Language.Translate("DoctoralResearch")</h3><p>@Language.Translate("DoctoralResearchText")</p></article><article class="highlight-card"><h3>@Language.Translate("MarineResearch")</h3><p>@Language.Translate("MarineResearchText")</p></article><article class="highlight-card"><h3>@Language.Translate("MonitoringResearch")</h3><p>@Language.Translate("MonitoringResearchText")</p></article><article class="highlight-card"><h3>@Language.Translate("UnderwaterResearch")</h3><p>@Language.Translate("UnderwaterResearchText")</p></article></div></section>
+<section aria-labelledby="ResearchAreasHeading"><h2 id="ResearchAreasHeading">@Language.Translate("ResearchAreasHeading")</h2><div class="highlights"><article class="highlight-card"><h3>@Language.Translate("TourismResearch")</h3><p>@Language.Translate("TourismResearchText")</p></article><article class="highlight-card"><h3>@Language.Translate("TechnologyResearch")</h3><p>@Language.Translate("TechnologyResearchText")</p></article><article class="highlight-card"><h3>@Language.Translate("EnvironmentResearch")</h3><p>@Language.Translate("EnvironmentResearchText")</p></article></div></section>
+
+
+@code {
+    protected override void OnInitialized() => Language.LanguageChanged += OnLanguageChanged;
+    private void OnLanguageChanged() => _ = InvokeAsync(StateHasChanged);
+    public void Dispose() => Language.LanguageChanged -= OnLanguageChanged;
+}

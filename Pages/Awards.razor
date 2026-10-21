@@ -1,0 +1,15 @@
+@page "/awards"
+@inject HakanBeratDemircan.Services.LanguageService Language
+@implements IDisposable
+
+<PageTitle>@Language.Translate("Awards") | Hakan Berat Demircan</PageTitle>
+<section class="page-intro"><h1>@Language.Translate("Awards")</h1><p class="hero-description">@Language.Translate("AwardsIntro")</p></section>
+<section aria-labelledby="AwardListHeading"><h2 id="AwardListHeading">@Language.Translate("AwardListHeading")</h2><div class="highlights"><article class="highlight-card"><h3>@Language.Translate("Award2020")</h3><p>@Language.Translate("Award2020Text")</p></article><article class="highlight-card"><h3>@Language.Translate("Award2017")</h3><p>@Language.Translate("Award2017Text")</p></article><article class="highlight-card"><h3>@Language.Translate("Award2016Nature")</h3><p>@Language.Translate("Award2016NatureText")</p></article><article class="highlight-card"><h3>@Language.Translate("Award2016Archaeology")</h3><p>@Language.Translate("Award2016ArchaeologyText")</p></article></div></section>
+<section aria-labelledby="LicencesHeading"><h2 id="LicencesHeading">@Language.Translate("LicencesHeading")</h2><div class="highlights"><article class="highlight-card"><h3>@Language.Translate("PadiSenior")</h3><p>@Language.Translate("PadiSeniorText")</p></article><article class="highlight-card"><h3>@Language.Translate("Padi2014")</h3><p>@Language.Translate("Padi2014Text")</p></article><article class="highlight-card"><h3>@Language.Translate("CmasLicences")</h3><p>@Language.Translate("CmasLicencesText")</p></article><article class="highlight-card"><h3>@Language.Translate("MaritimeLicences")</h3><p>@Language.Translate("MaritimeLicencesText")</p></article><article class="highlight-card"><h3>@Language.Translate("SportsLicences")</h3><p>@Language.Translate("SportsLicencesText")</p></article></div></section>
+
+
+@code {
+    protected override void OnInitialized() => Language.LanguageChanged += OnLanguageChanged;
+    private void OnLanguageChanged() => _ = InvokeAsync(StateHasChanged);
+    public void Dispose() => Language.LanguageChanged -= OnLanguageChanged;
+}
