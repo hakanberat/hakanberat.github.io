@@ -1,5 +1,6 @@
 @page "/projects"
 @using System.Linq
+@using HakanBeratDemircan.Services
 @inject HakanBeratDemircan.Services.LanguageService Language
 @implements IDisposable
 
@@ -10,7 +11,7 @@
         <p class="projects-eyebrow">@Language.Translate("SoftwarePortfolioLabel")</p>
         <div class="projects-title-row">
             <h1>@Language.Translate("Projects")</h1>
-            <span class="projects-total" aria-label="Total projects">@projects.Count</span>
+            <span class="projects-total" aria-label="@Language.Translate("TotalProjects")">@projects.Count</span>
         </div>
         <p class="projects-intro">@Language.Translate("ProjectsIntro")</p>
     </header>
@@ -60,44 +61,7 @@
         <div class="projects-grid">
             @foreach (var project in FilteredProjects)
             {
-                <article class="software-project-card">
-                    <div class="project-topline">
-                        <span class="project-code-mark" aria-hidden="true">&lt;/&gt;</span>
-                        <span class="project-category">
-                            @Language.Translate("Category_" + project.Category)
-                        </span>
-                    </div>
-
-                    <div class="project-meta">
-                        <span class="project-year">@project.Year</span>
-                        @if (project.Featured)
-                        {
-                            <span class="project-featured">
-                                @Language.Translate("FeaturedProject")
-                            </span>
-                        }
-                    </div>
-
-                    <h2>@project.Name</h2>
-                    <p class="project-summary">
-                        @Language.Translate(project.DescriptionKey)
-                    </p>
-
-                    <div class="project-tech-list">
-                        @foreach (var technology in project.Technologies)
-                        {
-                            <span class="project-tech">@technology</span>
-                        }
-                    </div>
-
-                    <a class="project-github"
-                       href="@project.GitHubUrl"
-                       target="_blank"
-                       rel="noopener noreferrer">
-                        @Language.Translate("ViewRepository")
-                        <span aria-hidden="true">↗</span>
-                    </a>
-                </article>
+                <ProjectCard Project="project" />
             }
         </div>
     }
@@ -112,46 +76,14 @@
         "all", "web", "pwa", "desktop", "mobile", "legacy"
     };
 
-    private readonly List<PortfolioProject> projects = new()
-    {
-        new("LifeDeck", "pwa", "LifeDeckDesc", 2026, true,
-            new[] { ".NET 10", "Blazor WebAssembly", "PWA", "REST API", "localStorage" },
-            "https://github.com/hakanberat/LifeDeck"),
-
-        new("Scuba Diving Marketplace", "web", "DiveMarketplaceDesc", 2026, true,
-            new[] { ".NET 10", "ASP.NET Core MVC", "Dapper", "SQL Server" },
-            "https://github.com/hakanberat/Scuba-Diving-Marketplace"),
-
-        new("Dive Center Management System — Web", "web", "DiveCenterManagerDesc", 2026, true,
-            new[] { ".NET 10", "ASP.NET Core MVC", "Dapper", "SQL Server" },
-            "https://github.com/hakanberat/Dive-Center-Management-System"),
-
-        new("Dive Center Management System — Desktop", "desktop", "DesktopDiveCenterDesc", 2026, false,
-            new[] { ".NET 10", "WPF", "MVVM", "EF Core", "SQLite" },
-            "https://github.com/hakanberat/Desktop-Dive-Center-Management-System"),
-
-        new("DiveHub Logbook", "mobile", "DiveHubLogbookDesc", 2026, false,
-            new[] { ".NET 10", ".NET MAUI", "MVVM", "SQLite" },
-            "https://github.com/hakanberat/DiveHub-Logbook-MAUI"),
-
-        new("Personal Finance Tracker", "mobile", "PersonalAccountingDesc", 2026, false,
-            new[] { ".NET 10", ".NET MAUI", "SQLite" },
-            "https://github.com/hakanberat/Personal-Finance-Tracker-MAUI"),
-
-        new("EMU SCT Mobile App — Master's Project", "legacy", "EmuSctDesc", 2014, false,
-            new[] { "Java", "Android", "PHP", "MySQL" },
-            "https://github.com/hakanberat/EMU-SCT-MobileApp-Legacy"),
-
-        new("DiveHub Android — Legacy", "legacy", "DiveHubLegacyDesc", 2014, false,
-            new[] { "Java", "Android", "SQLite" },
-            "https://github.com/hakanberat/DiveHub-Android-Legacy")
-    };
-
+    private IReadOnlyList<PortfolioProject> projects => ProjectCatalog.All;
     private IEnumerable<PortfolioProject> FilteredProjects =>
         projects.Where(project =>
             (selectedCategory == "all" || project.Category == selectedCategory) &&
             (string.IsNullOrWhiteSpace(searchTerm) ||
              project.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+             Language.Translate(project.DescriptionKey + "Problem")
+                 .Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
              Language.Translate(project.DescriptionKey)
                  .Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
              project.Technologies.Any(technology =>
@@ -174,12 +106,4 @@
 
     public void Dispose() => Language.LanguageChanged -= OnLanguageChanged;
 
-    private sealed record PortfolioProject(
-        string Name,
-        string Category,
-        string DescriptionKey,
-        int Year,
-        bool Featured,
-        string[] Technologies,
-        string GitHubUrl);
 }

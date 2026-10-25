@@ -4,6 +4,7 @@
 @inject IJSRuntime JS
 @inject HakanBeratDemircan.Services.LanguageService Language
 
+<a class="skip-link" href="#main-content">@Language.Translate("SkipContent")</a>
 <div class="site-container">
 
     <header class="site-header">
@@ -18,7 +19,7 @@
         </div>
     </header>
 
-    <main class="site-main">
+    <main id="main-content" class="site-main" tabindex="-1">
         @Body
     </main>
 

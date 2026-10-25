@@ -1,11 +1,11 @@
-﻿@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Routing
 @inject IJSRuntime JS
 @inject HakanBeratDemircan.Services.LanguageService Language
 @implements IDisposable
 
 <button class="menu-toggle"
         type="button"
-        aria-label="Toggle navigation"
+        aria-label="@Language.Translate("ToggleNavigation")"
         aria-controls="portfolio-navigation"
         aria-expanded="@menuOpen"
         @onclick="ToggleMenu">

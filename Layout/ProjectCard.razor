@@ -1,0 +1,15 @@
+@using HakanBeratDemircan.Services
+@inject LanguageService Language
+<article class="portfolio-project @(Project.Featured ? "is-featured" : "")">
+ <div class="portfolio-project-meta"><span>@Project.Year · @Language.Translate("Category_" + Project.Category)</span>@if (Project.Featured) { <span class="featured-label">@Language.Translate("FeaturedProject")</span> }</div>
+ @if (Compact) { <h3>@Project.Name</h3> } else { <h2>@Project.Name</h2> }
+ <p class="project-problem">@Language.Translate(Project.DescriptionKey + "Problem")</p>
+ <div class="project-capabilities"><p class="project-detail-label">@Language.Translate("ImplementedScope")</p><p>@Language.Translate(Project.DescriptionKey)</p></div>
+ <ul class="portfolio-project-tech" aria-label="@Language.Translate("TechnologyStack")">@foreach (var tech in Project.Technologies) { <li>@tech</li> }</ul>
+ @if (!Compact) { <p class="project-contribution"><strong>@Language.Translate("Contribution")</strong> @Language.Translate(Project.DescriptionKey + "Contribution")</p> }
+ <a class="repository-link" href="@Project.GitHubUrl" target="_blank" rel="noopener noreferrer">@Language.Translate("ViewRepository")<span class="visually-hidden"> — @Project.Name</span> <span aria-hidden="true">↗</span></a>
+</article>
+@code {
+ [Parameter, EditorRequired] public PortfolioProject Project { get; set; } = default!;
+ [Parameter] public bool Compact { get; set; }
+}
