@@ -1,141 +1,200 @@
-# Hakan Berat Demircan — Personal Portfolio
+# Hakan Berat Demircan — Developer Portfolio
 
-**Developed: 2026**  
-**Technology: .NET 10 · Blazor WebAssembly · C#**
+A bilingual personal portfolio built with **C#, .NET 10 and Blazor WebAssembly**, presenting my software projects, professional experience, academic research and creative work.
 
-A bilingual (English/Turkish) personal portfolio highlighting my work in **software development and information technology**, alongside professional experience, academic research, and creative projects.
-
-**Website:** [hakanberat.github.io](https://hakanberat.github.io)  
-**GitHub:** [github.com/hakanberat](https://github.com/hakanberat)
+**Website:** [hakanberat.github.io](https://hakanberat.github.io)
 
 ## Overview
 
-This website is my professional portfolio and online CV. It puts software engineering work first while providing a more complete view of my background in IT, business operations, tourism research, scuba diving, and visual media.
+This portfolio introduces my work across web, desktop and mobile development, with a focus on the .NET ecosystem.
 
-The website is built as a **standalone Blazor WebAssembly application** and designed for deployment to **GitHub Pages** without a dedicated application server or database.
+The website brings together project repositories, technology stacks and implementation descriptions, alongside my background in information technology, business operations and tourism research.
+
+It is a standalone Blazor WebAssembly application configured for static hosting on GitHub Pages. No application server or database is required.
 
 ## Features
 
-- **English and Turkish:** Language switching with the selected preference stored in the browser's `localStorage`.
-- **Responsive design:** Layouts for desktop, tablet, and mobile screens, including mobile navigation.
-- **Software portfolio:** Searchable and category-filtered projects, with technology tags and repository links.
-- **Professional experience:** Career history, business operations, and IT-related work.
-- **Education and research:** Academic degrees, doctoral research, publications, and conference contributions.
-- **Creative portfolio:** Underwater videography, graphic design, and digital media work.
-- **Awards and certifications:** International underwater video competition awards and professional qualifications.
-- **Contact and social profiles:** Professional links and email contact without a publicly displayed phone number.
-- **Automated deployment:** A GitHub Actions workflow configured to publish the site to GitHub Pages.
+- **English and Turkish:** Switch languages without leaving the current page.
+- **Remembered language preference:** The selected language is stored in browser localStorage.
+- **Searchable project catalog:** Search project names, descriptions, problem statements and technologies.
+- **Category filters:** Browse web, PWA, desktop, mobile and legacy projects.
+- **Featured projects:** Highlighted applications on the homepage.
+- **Responsive navigation:** Desktop navigation and a collapsible mobile menu.
+- **Professional background:** Experience, education, research and awards.
+- **Creative portfolio:** Design and underwater media work.
+- **Contact links:** Email and professional/social profiles.
+- **Automated deployment:** GitHub Actions workflow for GitHub Pages.
+
+## Website Sections
+
+| Section | Contents |
+|---|---|
+| Home | Developer introduction, core technologies and featured projects |
+| Projects | Searchable software catalog with categories and repository links |
+| Experience | Professional history and operational experience |
+| Research | Publications, doctoral research and related projects |
+| Creative | Design and visual media work |
+| Awards & Media | Awards, qualifications and media-related background |
+| Contact | Email and external profile links |
+
+## Software Portfolio
+
+| Project | Main Technologies | Repository |
+|---|---|---|
+| LifeDeck | Blazor WebAssembly, .NET 10, PWA | [LifeDeck](https://github.com/hakanberat/LifeDeck) |
+| Scuba Diving Marketplace | ASP.NET Core MVC, Dapper, SQL Server | [Repository](https://github.com/hakanberat/Scuba-Diving-Marketplace) |
+| Dive Center Management — Web | ASP.NET Core MVC, Dapper, SQL Server | [Repository](https://github.com/hakanberat/Dive-Center-Management-System) |
+| Dive Center Management — Desktop | WPF, MVVM, EF Core, SQLite | [Repository](https://github.com/hakanberat/Desktop-Dive-Center-Management-System) |
+| Dive Hub Logbook | .NET MAUI, MVVM, SQLite | [Repository](https://github.com/hakanberat/DiveHub-Logbook-MAUI) |
+| Personal Finance Tracker | .NET MAUI, SQLite | [Repository](https://github.com/hakanberat/Personal-Finance-Tracker-MAUI) |
+| EMU SCT — Master's Project | Java, Android, PHP, MySQL | [Repository](https://github.com/hakanberat/EMU-SCT-Android-Application-Legacy) |
+| Dive Hub Android — Legacy | Java, Android, SQLite | [Repository](https://github.com/hakanberat/DiveHub-Android-Legacy) |
+
+Project metadata is maintained in the source code rather than retrieved dynamically from GitHub. Each linked repository documents its own implementation and limitations.
 
 ## Technology Stack
 
 | Area | Technology |
-| --- | --- |
-| Framework | .NET 10, Blazor WebAssembly (standalone) |
-| Languages | C#, Razor, HTML, CSS, JavaScript |
-| UI | Blazor components, responsive CSS, Bootstrap |
-| Localization | Custom `LanguageService` with English/Turkish translations |
-| Browser storage | `localStorage` for language preference via JavaScript interop |
+|---|---|
+| Language | C# |
+| Framework | .NET 10 / Blazor WebAssembly |
+| Components | Razor |
+| Styling | CSS, CSS isolation and bundled Bootstrap |
+| Browser Integration | JavaScript interop |
+| Localization | Custom English/Turkish LanguageService |
+| Preference Storage | Browser localStorage |
 | Hosting | GitHub Pages |
-| CI/CD | GitHub Actions |
+| Deployment | GitHub Actions |
 
-The portfolio itself does not require a backend API or database. The software projects it showcases use their own architectures and technologies.
+## Architecture
 
-## Software Projects
+The portfolio separates page content, shared components, project metadata and translations.
 
-The Projects page includes the following repositories:
+| Path | Responsibility |
+|---|---|
+| `Pages/` | Portfolio sections and interactive project listing |
+| `Layout/MainLayout.razor` | Shared header, content area and footer |
+| `Layout/NavMenu.razor` | Navigation and language controls |
+| `Layout/ProjectCard.razor` | Reusable project presentation |
+| `Services/ProjectCatalog.cs` | Project names, categories, technologies and repository URLs |
+| `Services/LanguageService.cs` | Translations, current language and change notifications |
+| `wwwroot/css/` | Shared visual styles |
+| `wwwroot/js/portfolio.js` | HTML language and metadata updates |
+| `wwwroot/assets/` | Portfolio images |
+| `.github/workflows/deploy.yml` | GitHub Pages deployment |
+| `Program.cs` | Blazor startup and service registration |
 
-| Project | Main technologies | Repository |
-| --- | --- | --- |
-| LifeDeck | Blazor WebAssembly, .NET 10, PWA | [LifeDeck](https://github.com/hakanberat/LifeDeck) |
-| Scuba Diving Marketplace | ASP.NET Core MVC, Dapper, SQL Server | [Scuba-Diving-Marketplace](https://github.com/hakanberat/Scuba-Diving-Marketplace) |
-| Dive Center Management System — Web | ASP.NET Core MVC, Dapper, SQL Server | [Dive-Center-Management-System](https://github.com/hakanberat/Dive-Center-Management-System) |
-| Dive Center Management System — Desktop | WPF, MVVM, EF Core, SQLite | [Desktop-Dive-Center-Management-System](https://github.com/hakanberat/Desktop-Dive-Center-Management-System) |
-| DiveHub Logbook | .NET MAUI, MVVM, SQLite | [DiveHub-Logbook-MAUI](https://github.com/hakanberat/DiveHub-Logbook-MAUI) |
-| Personal Finance Tracker | .NET MAUI, SQLite | [Personal-Finance-Tracker-MAUI](https://github.com/hakanberat/Personal-Finance-Tracker-MAUI) |
-| EMU SCT Mobile App (2014) | Java, Android, PHP, MySQL | [EMU-SCT-MobileApp-Legacy](https://github.com/hakanberat/EMU-SCT-MobileApp-Legacy) |
-| DiveHub Android (2014) | Java, Android, SQLite | [DiveHub-Android-Legacy](https://github.com/hakanberat/DiveHub-Android-Legacy) |
+The homepage and Projects page share the same project catalog, helping keep featured projects and the full listing consistent.
 
-Project descriptions and links are maintained within the portfolio source code rather than fetched dynamically from the GitHub API.
+## Language Support
 
-## Website Sections
+The custom `LanguageService` provides English and Turkish translations.
 
-- **Home:** Introduction, areas of expertise, career highlights, education, and selected work.
-- **Projects:** Software applications, technology stacks, search, and filters.
-- **Experience:** Professional career and work history.
-- **Research:** Academic publications, doctoral research, and related projects.
-- **Creative:** Design, video, and digital media portfolio.
-- **Awards & Media:** Competition awards and professional certifications.
-- **Contact:** Contact details and links to professional platforms.
+When the language changes:
 
-## Project Structure
+- Subscribed components refresh their content.
+- The browser stores the preference under `portfolio-language`.
+- JavaScript updates the document language and selected description metadata.
 
-```text
-HakanBeratDemircan/
-├── Pages/                  # Portfolio pages
-├── Layout/                 # Shared layout and navigation
-├── Services/               # Language and application services
-├── wwwroot/                # Static assets, CSS, and JavaScript
-├── .github/workflows/      # GitHub Pages deployment workflow
-├── App.razor
-├── Program.cs
-└── HakanBeratDemircan.csproj
-```
+The saved preference is restored on subsequent visits.
+
+This is client-side localization, without separate language-specific URLs.
 
 ## Getting Started
 
-**Requirement:** .NET 10 SDK
+### Requirements
 
-Clone the repository:
+- .NET 10 SDK
+- A browser capable of running Blazor WebAssembly
+- Git
+
+### Clone the Repository
 
 ```bash
 git clone https://github.com/hakanberat/hakanberat.github.io.git
 cd hakanberat.github.io
 ```
 
-Restore dependencies and start the development server:
+### Run Locally
 
 ```bash
 dotnet restore
+dotnet run
+```
+
+Open the local address printed in the terminal.
+
+For development with automatic reload:
+
+```bash
 dotnet watch run
 ```
 
-Open the localhost URL shown in the terminal.
-
-To verify a production build locally:
+### Publish
 
 ```bash
-dotnet publish -c Release
+dotnet publish HakanBeratDemircan.csproj -c Release -o publish
 ```
 
-## Deployment
+The deployable static website is generated in:
 
-The repository contains a GitHub Actions workflow at `.github/workflows/deploy.yml` configured to:
+```text
+publish/wwwroot
+```
 
-1. Check out the `main` branch.
-2. Install the .NET 10 SDK.
-3. Publish the Blazor WebAssembly application in Release mode.
-4. Prepare the static website files for GitHub Pages.
-5. Upload and deploy the published output.
+## GitHub Pages Deployment
 
-The workflow runs on pushes to `main` and can also be started manually. GitHub Pages must be configured to use **GitHub Actions** as its deployment source.
+The workflow in `.github/workflows/deploy.yml` runs on:
 
-## About the Author
+- Pushes to `main`
+- Manual workflow dispatch
+
+It performs the following steps:
+
+1. Checks out the repository.
+2. Installs the .NET 10 SDK.
+3. Publishes the application in Release mode.
+4. Adds `.nojekyll` to the output.
+5. Copies `index.html` to `404.html` for client-side route fallback.
+6. Uploads the static website artifact.
+7. Deploys it to GitHub Pages.
+
+GitHub Pages must be configured to use **GitHub Actions** as its deployment source.
+
+The current HTML base path is `/`, matching the root-hosted `hakanberat.github.io` site. Hosting beneath a project subdirectory requires corresponding path changes.
+
+## Updating Content
+
+| Change | Main Location |
+|---|---|
+| Add or update a software project | `Services/ProjectCatalog.cs` |
+| Update translated descriptions | `Services/LanguageService.cs` |
+| Change page layout or content structure | `Pages/` |
+| Change navigation | `Layout/NavMenu.razor` |
+| Update shared styling | `wwwroot/css/portfolio.css` |
+| Update contact destinations | `Pages/Contact.razor` |
+| Update content and image provenance | `PORTFOLIO-SOURCES.md` |
+
+After renaming a project repository, update its URL in the project catalog and any related documentation.
+
+## Current Scope
+
+- Portfolio content is maintained in source code.
+- The site does not include a content management dashboard.
+- Contact uses email and external profile links rather than a backend contact form.
+- Language preference is stored locally in the browser.
+- No automated test project is included.
+
+Content and image provenance notes are available in [PORTFOLIO-SOURCES.md](PORTFOLIO-SOURCES.md).
+
+## Author
 
 **Hakan Berat Demircan, PhD**  
-Software Developer · IT Professional · Researcher · Underwater Videographer
+C# / .NET Software Developer
 
-My background combines software development and information technology with business operations, academic research in tourism, scuba diving instruction, and visual content production.
+My background combines software development and information technology with business operations, tourism research and scuba diving instruction.
 
 - [Website](https://hakanberat.github.io)
 - [GitHub](https://github.com/hakanberat)
 - [LinkedIn](https://www.linkedin.com/in/hakan-berat-demircan/)
 - [Behance](https://www.behance.net/hakanberatdemircan)
-- [Instagram](https://www.instagram.com/hakanbdemircan/)
-
-## Project Status
-
-**Active development — 2026.** The site and portfolio content may continue to evolve as new projects and professional work are added.
-
----
-
-© 2026 Hakan Berat Demircan.
