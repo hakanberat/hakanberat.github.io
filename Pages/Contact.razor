@@ -1,0 +1,25 @@
+﻿@page "/contact"
+@inherits LocalizedComponent
+@inject IJSRuntime JS
+
+<PageTitle>@T("Contact") | Hakan Berat Demircan</PageTitle>
+<PageIntro TitleKey="Contact" DescriptionKey="ContactIntro" KickerKey="ContactKicker" Icon="mail" />
+<section class="contact-hero reveal" aria-labelledby="ContactDetailsHeading">
+    <div class="contact-email-block"><span class="contact-icon"><Icon Name="mail" /></span><h2 id="ContactDetailsHeading">@T("EmailHeading")</h2><a class="contact-email" href="mailto:hakanberatdemircan@gmail.com">hakanberatdemircan<wbr />@@gmail.com</a><div class="email-actions"><a class="btn-primary" href="mailto:hakanberatdemircan@gmail.com"><Icon Name="mail" />@T("EmailAction")</a><button class="btn-secondary" type="button" @onclick="CopyEmail"><Icon Name="@(copyStatus == "EmailCopied" ? "check" : "copy")" />@T("CopyEmail")</button></div><p class="copy-status" role="status">@(copyStatus is null ? "" : T(copyStatus))</p></div>
+    <div class="contact-context"><div><Icon Name="pin" /><h3>@T("LocationHeading")</h3><p>@T("LocationText")<br />@T("LocationNorthCyprus")</p></div><div><Icon Name="globe" /><h3>@T("ContactLanguageHeading")</h3><p>@T("ContactLanguageText")</p></div></div>
+</section>
+<section class="portfolio-section" aria-labelledby="profiles-title">
+    <SectionHeading Id="profiles-title" KickerKey="ElsewhereKicker" TitleKey="StayConnected" />
+    <div class="profile-grid"><ProfileLink Name="GitHub" Icon="github" TitleKey="SourceCodeProfile" Href="https://github.com/hakanberat" /><ProfileLink Name="LinkedIn" Icon="linkedin" TitleKey="ProfessionalProfile" Href="https://www.linkedin.com/in/hakan-berat-demircan/" /><ProfileLink Name="Behance" Icon="layers" TitleKey="DesignProfile" Href="https://www.behance.net/hakanberatdemircan" /><ProfileLink Name="Instagram" Icon="camera" TitleKey="PersonalProfile" Href="https://www.instagram.com/hakanbdemircan/" /></div>
+</section>
+<section class="portfolio-section" aria-labelledby="dive-channels-title"><SectionHeading Id="dive-channels-title" TitleKey="DiveHubChannels" /><div class="channel-grid"><ProfileLink Name="YouTube" Icon="play" TitleKey="DiveHubVideo" DescriptionKey="DiveHubVideoText" Href="@("https://www.youtube.com/@divehubcyprus")" /><ProfileLink Name="Instagram" Icon="camera" TitleKey="DiveHubInstagram" DescriptionKey="DiveHubInstagramText" Href="https://www.instagram.com/divehub/" /><ProfileLink Name="Dive Hub" Icon="waves" TitleKey="DiveHubSite" DescriptionKey="DiveHubSiteText" Href="http://dive-hub.com/en/" /></div></section>
+<ContactCallout />
+
+@code {
+    private string? copyStatus;
+    private async Task CopyEmail()
+    {
+        var copied = await JS.InvokeAsync<bool>("portfolio.copyEmail");
+        copyStatus = copied ? "EmailCopied" : "EmailCopyFailed";
+    }
+}

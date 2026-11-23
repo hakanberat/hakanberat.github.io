@@ -1,0 +1,38 @@
+﻿@page "/research"
+@inherits LocalizedComponent
+
+<PageTitle>@T("Research") | Hakan Berat Demircan</PageTitle>
+<PageIntro TitleKey="Research" DescriptionKey="ResearchIntro" KickerKey="ResearchKicker" Icon="book" />
+<section class="portfolio-section first-section" aria-labelledby="PublicationsHeading">
+    <SectionHeading Id="PublicationsHeading" TitleKey="PublicationsHeading" />
+    <article class="publication-feature reveal">
+        <div class="publication-symbol" aria-hidden="true"><Icon Name="book" /><span>IT<br />&amp; @T("Research")<span class="accent-period">.</span></span></div>
+        <div class="publication-copy"><p class="section-kicker">@T("JournalArticle")</p><h3 lang="en">@T("PublicationTitle")</h3><p class="publication-authors">Demircan, H. B., Ozturen, A., Ali, L., Ali, F., &amp; Irani, F.</p><p>@T("PublicationDetails")</p><div class="publication-links"><a class="btn-primary" href="https://doi.org/10.1108/JHTT-09-2024-0608" target="_blank" rel="noopener noreferrer">@T("ReadPublication")</a><a class="text-link" href="https://i-rep.emu.edu.tr/items/d831e82d-e467-4c7e-9c0c-733509c0593d" target="_blank" rel="noopener noreferrer">@T("UniversityRecord")</a></div><span class="doi">DOI: 10.1108/JHTT-09-2024-0608</span></div>
+    </article>
+    <article class="conference-card reveal" aria-labelledby="conference-title">
+        <div class="conference-card-heading">
+            <span class="conference-icon"><Icon Name="book" /></span>
+            <p class="section-kicker">@T("ConferenceLabel")</p>
+        </div>
+        <h3 id="conference-title" lang="en">@T("ConferenceTitle")</h3>
+        <p class="conference-details">@T("ConferenceDetails")</p>
+    </article>
+</section>
+<section class="portfolio-section" aria-labelledby="ResearchProjectsHeading">
+    <SectionHeading Id="ResearchProjectsHeading" TitleKey="ResearchProjectsHeading" />
+    <div class="research-grid">
+        @foreach (var key in ResearchProjects)
+        {
+            <article class="highlight-card reveal"><Icon Name="@(key == "DoctoralResearch" ? "book" : "waves")" /><h3>@T(key)</h3><p>@T(key + "Text")</p>
+                @if (key == "DoctoralResearch") { <a class="text-link" href="https://tourism.emu.edu.tr/en/about-us/staff/staff-detail?n=ali-ozturen&amp;sid=485" target="_blank" rel="noopener noreferrer">@T("ThesisInformation")</a> }
+            </article>
+        }
+    </div>
+</section>
+<section class="portfolio-section" aria-labelledby="ResearchAreasHeading"><SectionHeading Id="ResearchAreasHeading" TitleKey="ResearchAreasHeading" /><div class="research-interests">@foreach (var key in Interests) { <article class="reveal"><h3>@T(key)</h3><p>@T(key + "Text")</p></article> }</div></section>
+<ContactCallout />
+
+@code {
+    private static readonly string[] ResearchProjects = ["DoctoralResearch", "MarineResearch", "MonitoringResearch", "UnderwaterResearch"];
+    private static readonly string[] Interests = ["TourismResearch", "TechnologyResearch", "EnvironmentResearch"];
+}

@@ -1,0 +1,11 @@
+﻿/* Framework loading and error states. */
+.loading-shell { min-height: 100svh; display: grid; place-content: center; gap: 1.5rem; justify-items: center; background: var(--bg); color: var(--muted); font-family: 'Segoe UI', sans-serif; }
+.loading-brand { font-size: 2.6rem; font-weight: 750; letter-spacing: -.08em; color: var(--text); }
+.loading-brand span { color: var(--accent); }
+.loading-track { width: 9rem; height: 2px; background: var(--line); overflow: hidden; }
+.loading-track::after { content: ''; display: block; height: 100%; width: var(--blazor-load-percentage, 4%); background: var(--accent); transition: width .2s; }
+.loading-progress-text { font-size: .875rem; }
+.loading-progress-text::after { content: var(--blazor-load-percentage-text, 'Loading portfolio…'); }
+#blazor-error-ui { display: none; position: fixed; inset: auto 1rem 1rem; z-index: 1000; padding: 1rem 3rem 1rem 1.25rem; border: 1px solid #3B506D; border-radius: 12px; background: var(--surface); color: var(--text); box-shadow: 0 8px 40px #050A1477; font: 1rem/1.6 'Segoe UI', sans-serif; }
+#blazor-error-ui .reload { color: var(--text); margin-inline-start: .75rem; text-decoration: underline; }
+#blazor-error-ui .dismiss { position: absolute; right: .5rem; top: .5rem; padding: .5rem; border: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; }

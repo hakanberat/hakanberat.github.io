@@ -1,0 +1,37 @@
+@inherits LocalizedComponent
+@using HakanBeratDemircan.Services
+
+<article class="portfolio-project project-@Project.Category @(Compact ? "compact" : "") reveal">
+    <div class="project-visual" aria-hidden="true">
+        <div class="project-grid-pattern"></div>
+        <span class="project-platform">@T("Category_" + Project.Category) / @Project.Year</span>
+        <div class="project-emblem"><Icon Name="@ProjectIcon" /></div>
+        <span class="project-visual-title">@VisualTitle</span>
+        <span class="project-visual-stack">@Project.Technologies[0] <span>·</span> @Project.Technologies[1]</span>
+    </div>
+    <div class="project-copy">
+        <div class="portfolio-project-meta"><span>@Project.Year · @T("Category_" + Project.Category)</span>@if (Project.Featured) { <span class="featured-label">@T("FeaturedProject")</span> }</div>
+        @if (Compact) { <h3>@Project.Name</h3> } else { <h2>@Project.Name</h2> }
+        <p class="project-problem">@T(Project.DescriptionKey + "Problem")</p>
+        <div class="project-capabilities"><p class="project-detail-label">@T("ImplementedScope")</p><p>@T(Project.DescriptionKey)</p></div>
+        <ul class="portfolio-project-tech" aria-label="@T("TechnologyStack")">@foreach (var tech in Project.Technologies) { <li>@tech</li> }</ul>
+        @if (!Compact) { <p class="project-contribution"><strong>@T("Contribution")</strong> @T(Project.DescriptionKey + "Contribution")</p> }
+        <a class="repository-link" href="@Project.GitHubUrl" target="_blank" rel="noopener noreferrer"><Icon Name="github" />@T("ViewRepository")<span class="visually-hidden"> — @Project.Name</span></a>
+    </div>
+</article>
+
+@code {
+    [Parameter, EditorRequired] public PortfolioProject Project { get; set; } = default!;
+    [Parameter] public bool Compact { get; set; }
+    private string ProjectIcon => Project.Category switch { "pwa" => "layers", "mobile" or "legacy" => "mobile", "desktop" => "desktop", _ => "web" };
+    private string VisualTitle => Project.DescriptionKey switch {
+        "LifeDeckDesc" => "LifeDeck",
+        "DiveMarketplaceDesc" => "Scuba Diving Marketplace",
+        "DiveCenterManagerDesc" => "Dive Center / Web",
+        "DesktopDiveCenterDesc" => "Dive Center / Desktop",
+        "DiveHubLogbookDesc" => "DiveHub Logbook",
+        "PersonalAccountingDesc" => "Personal Finance",
+        "EmuSctDesc" => "EMU SCT",
+        _ => "DiveHub / Android"
+    };
+}

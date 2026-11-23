@@ -1,0 +1,40 @@
+﻿@inherits LocalizedComponent
+@inject IJSRuntime JS
+
+<div class="navigation-shell" @onkeydown="HandleKeyDown">
+    <div class="header-controls">
+        <div class="language-switch" role="group" aria-label="@T("LanguageChoice")">
+            <button type="button" lang="en" class="lang-button @(Language.CurrentLanguage == "en" ? "active" : "")" aria-pressed="@(Language.CurrentLanguage == "en")" aria-label="English" @onclick='() => SetLanguageAsync("en")'>EN</button>
+            <button type="button" lang="tr" class="lang-button @(Language.CurrentLanguage == "tr" ? "active" : "")" aria-pressed="@(Language.CurrentLanguage == "tr")" aria-label="Türkçe" @onclick='() => SetLanguageAsync("tr")'>TR</button>
+        </div>
+        <button id="menu-toggle" class="menu-toggle @(menuOpen ? "is-open" : "")" type="button" aria-label="@T("ToggleNavigation")" aria-controls="portfolio-navigation" aria-expanded="@(menuOpen ? "true" : "false")" @onclick="ToggleMenu"><span></span><span></span></button>
+    </div>
+    <nav id="portfolio-navigation" class="portfolio-nav @(menuOpen ? "open" : "")" aria-label="@T("MainNavigation")">
+        <div class="nav-links">
+            @foreach (var item in Items)
+            {
+                <NavLink href="@item.Path" Match="@(item.Path == "" ? NavLinkMatch.All : NavLinkMatch.Prefix)" @onclick="CloseMenu">@T(item.Key)</NavLink>
+            }
+        </div>
+    </nav>
+</div>
+
+@code {
+    private bool menuOpen;
+    private static readonly (string Path, string Key)[] Items = [("", "Home"), ("projects", "Projects"), ("experience", "Experience"), ("research", "Research"), ("creative", "Creative"), ("awards", "AwardsNav"), ("contact", "Contact")];
+    private void ToggleMenu() => menuOpen = !menuOpen;
+    private void CloseMenu() => menuOpen = false;
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape" && menuOpen)
+        {
+            menuOpen = false;
+            await JS.InvokeVoidAsync("portfolio.focusMenu");
+        }
+    }
+    private async Task SetLanguageAsync(string language)
+    {
+        Language.SetLanguage(language);
+        await JS.InvokeVoidAsync("portfolio.saveLanguage", language);
+    }
+}

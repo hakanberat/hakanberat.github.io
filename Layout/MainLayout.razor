@@ -1,0 +1,62 @@
+﻿@inherits LayoutComponentBase
+@implements IDisposable
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+@inject HakanBeratDemircan.Services.LanguageService Language
+
+<a class="skip-link" href="#main-content">@Language.Translate("SkipContent")</a>
+<div class="site-container">
+    <header class="site-header">
+        <div class="header-content">
+            <a href="" class="site-logo" aria-label="Hakan Berat Demircan — @Language.Translate("Home")">
+                <span class="logo-mark" aria-hidden="true">hbd<span>.</span></span>
+                <span class="logo-caption">Hakan Berat<br />Demircan</span>
+            </a>
+            <NavMenu />
+        </div>
+    </header>
+    <main id="main-content" class="site-main" tabindex="-1">@Body</main>
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-signature"><a href="" class="logo-mark">hbd<span>.</span></a><p>© @DateTime.Now.Year Hakan Berat Demircan<br /><span>C# / .NET · Blazor WebAssembly</span></p></div>
+            <nav class="footer-socials" aria-label="@Language.Translate("SocialProfiles")">
+                <a href="https://github.com/hakanberat" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://www.linkedin.com/in/hakan-berat-demircan/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://www.behance.net/hakanberatdemircan" target="_blank" rel="noopener noreferrer">Behance</a>
+                <a href="https://www.instagram.com/hakanbdemircan/" target="_blank" rel="noopener noreferrer">Instagram</a>
+                <a href="https://www.youtube.com/@@divehubcyprus" target="_blank" rel="noopener noreferrer">YouTube · Dive Hub</a>
+                <a href="https://www.instagram.com/divehub/" target="_blank" rel="noopener noreferrer">Instagram · Dive Hub</a>
+                <a href="http://dive-hub.com/en/" target="_blank" rel="noopener noreferrer">Dive Hub</a>
+            </nav>
+        </div>
+    </footer>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        Language.LanguageChanged += OnLanguageChanged;
+        Navigation.LocationChanged += OnLocationChanged;
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var saved = await JS.InvokeAsync<string>("portfolio.initialize");
+            Language.SetLanguage(saved);
+            await JS.InvokeVoidAsync("portfolio.setLanguage", Language.CurrentLanguage);
+        }
+    }
+    private void OnLanguageChanged() => _ = InvokeAsync(async () =>
+    {
+        await JS.InvokeVoidAsync("portfolio.setLanguage", Language.CurrentLanguage);
+        StateHasChanged();
+    });
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e) =>
+        _ = JS.InvokeVoidAsync("portfolio.onNavigate");
+    public void Dispose()
+    {
+        Language.LanguageChanged -= OnLanguageChanged;
+        Navigation.LocationChanged -= OnLocationChanged;
+    }
+}

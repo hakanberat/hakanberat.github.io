@@ -1,0 +1,12 @@
+@inherits LocalizedComponent
+<header class="page-intro reveal">
+    <p class="section-kicker"><Icon Name="@Icon" /> @T(KickerKey)</p>
+    <h1>@T(TitleKey)</h1>
+    <p class="page-description">@T(DescriptionKey)</p>
+</header>
+@code {
+    [Parameter, EditorRequired] public string TitleKey { get; set; } = "";
+    [Parameter, EditorRequired] public string DescriptionKey { get; set; } = "";
+    [Parameter] public string KickerKey { get; set; } = "PortfolioHeroLabel";
+    [Parameter] public string Icon { get; set; } = "code";
+}

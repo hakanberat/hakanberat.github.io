@@ -1,0 +1,76 @@
+﻿@page "/experience"
+@inherits LocalizedComponent
+
+<PageTitle>@T("Experience") | Hakan Berat Demircan</PageTitle>
+<PageIntro TitleKey="Experience" DescriptionKey="ExperienceIntro" KickerKey="CareerKicker" Icon="briefcase" />
+<nav class="section-jumps" aria-label="@T("Experience")">
+    <a href="experience#WorkHeading">@T("WorkHeading")</a>
+    <a href="experience#EducationHeading">@T("EducationHeading")</a>
+    <a href="experience#SkillsHeading">@T("SkillsHeading")</a>
+    <a href="experience#TrainingHeading">@T("TrainingHeading")</a>
+</nav>
+<section class="portfolio-section" aria-labelledby="WorkHeading">
+    <SectionHeading Id="WorkHeading" TitleKey="WorkHeading" />
+    <div class="career-timeline">
+        @foreach (var role in Roles)
+        {
+            <article class="timeline-entry reveal">
+                <div class="timeline-period"><span>@role.Years</span><span>@role.Organization</span></div>
+                <div class="timeline-content"><h3>@T(role.Key + "Role")</h3><p class="timeline-meta">@T(role.Key + "RoleMeta")</p>
+                    @foreach (var textKey in role.TextKeys) { <p>@T(textKey)</p> }
+                    @if (role.Key == "DiveHub") { <a class="text-link" href="http://dive-hub.com/en/" target="_blank" rel="noopener noreferrer">@T("VisitDiveHub")</a> }
+                </div>
+            </article>
+        }
+    </div>
+</section>
+<section class="portfolio-section" aria-labelledby="EducationHeading">
+    <SectionHeading Id="EducationHeading" TitleKey="EducationHeading" />
+    <div class="education-grid">
+        @foreach (var item in Education)
+        {
+            <article class="education-card reveal"><Icon Name="book" /><h3>@T(item.Title)</h3><p class="card-meta">@T(item.Meta)</p>@if (item.Detail is not null) { <p>@T(item.Detail)</p> }</article>
+        }
+    </div>
+</section>
+<section class="portfolio-section" aria-labelledby="SkillsHeading">
+    <SectionHeading Id="SkillsHeading" TitleKey="SkillsHeading" />
+    <div class="skills-grid">
+        @foreach (var item in Skills)
+        {
+            <article class="highlight-card reveal"><Icon Name="@item.Icon" /><h3>@T(item.Key == "Languages" ? "LanguagesHeading" : item.Key)</h3><p>@T(item.Key + "Text")</p>@if (item.Key == "MediaSkills") { <p>@T("AITools")</p> }</article>
+        }
+    </div>
+</section>
+<section class="portfolio-section" aria-labelledby="TrainingHeading">
+    <SectionHeading Id="TrainingHeading" TitleKey="TrainingHeading" />
+    <div class="training-list">
+        @foreach (var key in Training) { <article class="training-item reveal"><Icon Name="check" /><h3>@T(key)</h3><p>@T(key + "Text")</p></article> }
+    </div>
+</section>
+<ContactCallout />
+
+@code {
+    private sealed record CareerRole(string Key, string Years, string Organization, params string[] TextKeys);
+    private static readonly CareerRole[] Roles = [
+        new("DiveHub", "2014–2024", "Dive Hub", "DiveHubOperations", "DiveHubDigital", "DiveHubMedia", "DiveHubField"),
+        new("Aretan", "2023–2024", "Aretan Investment", "AretanText"),
+        new("Lions", "2019–2021", "Lions International", "LionsText"),
+        new("Marine", "2016–2021", "Marine Litter", "MarineText"),
+        new("Archaeology", "2018", "Dive Hub / CIU", "ArchaeologyText"),
+        new("Emitt", "2017", "EMITT", "EmittText"),
+        new("Divemaster", "2013–2014", "Dive Hub", "DivemasterText"),
+        new("Halkbank", "2011", "Halkbank", "HalkbankText"),
+        new("AiesecIT", "2009", "AIESEC", "AiesecITText"),
+        new("AiesecEvent", "2009", "AIESEC · ATCOM’09", "AiesecEventText"),
+        new("Hotel", "2008", "Hotel Rome · USA", "HotelText"),
+        new("McDonalds", "2008", "McDonald’s · USA", "McDonaldsText"),
+        new("Beko", "2004", "Beko Electronics", "BekoText")
+    ];
+    private static readonly (string Title, string Meta, string? Detail)[] Education = [
+        ("EducationPhD", "PhDMeta", "Thesis"), ("EducationMTech", "MTechMeta", "MTechProject"),
+        ("EducationBSc", "BScMeta", null), ("EducationSchool", "SchoolMeta", null)
+    ];
+    private static readonly (string Key, string Icon)[] Skills = [("SoftwareSkills", "code"), ("MediaSkills", "camera"), ("OperationsSkills", "briefcase"), ("TeachingSkills", "book"), ("DivingSkills", "waves"), ("Languages", "globe")];
+    private static readonly string[] Training = ["MicrosoftTraining", "GoogleTraining", "EdinburghTraining", "AdobeTraining", "IstanbulTraining", "MetuTraining", "DesignTraining"];
+}

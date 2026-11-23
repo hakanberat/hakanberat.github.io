@@ -1,0 +1,14 @@
+@inherits LocalizedComponent
+<a class="channel-card reveal" href="@Href" target="_blank" rel="noopener noreferrer">
+    <div class="channel-top"><Icon Name="@Icon" /><span>@Name</span></div>
+    <h3>@T(TitleKey)</h3>
+    @if (DescriptionKey is not null) { <p>@T(DescriptionKey)</p> }
+    <span class="card-action">@T("VisitProfile")</span>
+</a>
+@code {
+    [Parameter, EditorRequired] public string Href { get; set; } = "";
+    [Parameter, EditorRequired] public string Name { get; set; } = "";
+    [Parameter, EditorRequired] public string TitleKey { get; set; } = "";
+    [Parameter] public string? DescriptionKey { get; set; }
+    [Parameter] public string Icon { get; set; } = "globe";
+}

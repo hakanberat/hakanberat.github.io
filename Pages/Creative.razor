@@ -1,0 +1,30 @@
+﻿@page "/creative"
+@inherits LocalizedComponent
+
+<PageTitle>@T("Creative") | Hakan Berat Demircan</PageTitle>
+<PageIntro TitleKey="Creative" DescriptionKey="CreativePortfolioIntro" KickerKey="CreativeKicker" Icon="camera" />
+<div class="creative-grid">
+    @foreach (var work in Works)
+    {
+        <article class="creative-card reveal"><a href="@work.Url" target="_blank" rel="noopener noreferrer"><div class="creative-image"><img src="assets/behance-@(work.Id).jpg" alt="@T(work.Key + "Title")" width="808" height="632" loading="lazy" /><span>Behance</span></div><div class="creative-copy"><p class="section-kicker">@T(work.Kind)</p><h2>@T(work.Key + "Title")</h2><p>@T(work.Key + "Copy")</p><span class="card-action">@T("ViewOnBehance")</span></div></a></article>
+    }
+</div>
+<div class="gallery-action"><a class="btn-secondary" href="https://www.behance.net/hakanberatdemircan" target="_blank" rel="noopener noreferrer">@T("FullBehance")</a></div>
+<section class="portfolio-section" aria-labelledby="channels-title">
+    <SectionHeading Id="channels-title" KickerKey="DiveHubChannels" TitleKey="WatchExplore" />
+    <div class="channel-grid"><ProfileLink Name="YouTube" Icon="play" TitleKey="DiveHubVideo" DescriptionKey="DiveHubVideoText" Href="@("https://www.youtube.com/@divehubcyprus")" /><ProfileLink Name="Instagram" Icon="camera" TitleKey="DiveHubInstagram" DescriptionKey="DiveHubInstagramText" Href="https://www.instagram.com/divehub/" /><ProfileLink Name="Dive Hub" Icon="waves" TitleKey="DiveHubSite" DescriptionKey="DiveHubSiteText" Href="http://dive-hub.com/en/" /></div>
+</section>
+<section class="portfolio-section" aria-labelledby="CreativeWorkHeading"><SectionHeading Id="CreativeWorkHeading" TitleKey="CreativeWorkHeading" /><div class="skills-grid creative-skills">@foreach (var key in Production) { <article class="highlight-card reveal"><Icon Name="camera" /><h3>@T(key)</h3><p>@T(key + "Text")</p></article> }</div></section>
+<ContactCallout />
+
+@code {
+    private sealed record CreativeWork(string Id, string Key, string Kind, string Url);
+    private static readonly CreativeWork[] Works = [
+        new("213693669", "Brochure", "BrochureKind", "https://www.behance.net/gallery/213693669/EMITT-Exhibition-Brochure"),
+        new("213877653", "Vlogs", "VideoKind", "https://www.behance.net/gallery/213877653/Instagram-Vlogs"),
+        new("213822699", "Reels", "VideoKind", "https://www.behance.net/gallery/213822699/Instagram-Reels"),
+        new("213693475", "SocialDesign", "SocialDesignKind", "https://www.behance.net/gallery/213693475/Social-Media-Promotions"),
+        new("213780033", "Visual", "VisualKind", "https://www.behance.net/gallery/213780033/AI-generated-images")
+    ];
+    private static readonly string[] Production = ["VideoProduction", "DigitalProduction", "DesignProduction"];
+}

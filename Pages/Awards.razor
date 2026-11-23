@@ -1,0 +1,23 @@
+﻿@page "/awards"
+@inherits LocalizedComponent
+
+<PageTitle>@T("Awards") | Hakan Berat Demircan</PageTitle>
+<PageIntro TitleKey="Awards" DescriptionKey="AwardsIntro" KickerKey="AwardsKicker" Icon="award" />
+<section class="portfolio-section first-section" aria-labelledby="AwardListHeading">
+    <SectionHeading Id="AwardListHeading" TitleKey="AwardListHeading" />
+    <div class="awards-grid">
+        @foreach (var key in AwardKeys) { <article class="award-card reveal"><div class="award-medal"><Icon Name="award" /><span>II</span></div><h3>@T(key)</h3><p>@T(key + "Text")</p></article> }
+    </div>
+</section>
+<section class="portfolio-section" aria-labelledby="LicencesHeading">
+    <SectionHeading Id="LicencesHeading" TitleKey="LicencesHeading" />
+    <div class="licence-list">
+        @foreach (var key in LicenceKeys) { <article class="licence-item reveal"><div class="licence-icon"><Icon Name="@(key.Contains("Maritime") ? "globe" : "waves")" /></div><h3>@T(key)</h3><p>@T(key + "Text")</p></article> }
+    </div>
+</section>
+<ContactCallout />
+
+@code {
+    private static readonly string[] AwardKeys = ["Award2020", "Award2017", "Award2016Nature", "Award2016Archaeology"];
+    private static readonly string[] LicenceKeys = ["PadiSenior", "Padi2014", "CmasLicences", "MaritimeLicences", "SportsLicences"];
+}

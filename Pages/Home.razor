@@ -1,0 +1,72 @@
+﻿@page "/"
+@inherits LocalizedComponent
+@using HakanBeratDemircan.Services
+
+<PageTitle>Hakan Berat Demircan | @T("PortfolioPageTitle")</PageTitle>
+<section class="portfolio-hero" aria-labelledby="home-title">
+    <div class="hero-content reveal">
+        <p class="hero-label"><span class="label-rule"></span>@T("HeroLabel")</p>
+        <h1 id="home-title">Hakan Berat<br /><span>Demircan<span class="accent-period">.</span></span></h1>
+        <p class="developer-title">@T("DeveloperTitle")</p>
+        <p class="hero-description">@T("HeroDescription")</p>
+        <div class="hero-buttons">
+            <a href="projects" class="btn-primary"><Icon Name="code" />@T("ViewSoftwareProjects")</a>
+            <a href="contact" class="btn-secondary">@T("ContactMe")</a>
+        </div>
+        <div class="hero-socials">
+            <a href="https://github.com/hakanberat" target="_blank" rel="noopener noreferrer"><Icon Name="github" />GitHub</a>
+            <a href="https://www.linkedin.com/in/hakan-berat-demircan/" target="_blank" rel="noopener noreferrer"><Icon Name="linkedin" />LinkedIn</a>
+            <span class="hero-location"><Icon Name="pin" />@T("LocationText")</span>
+        </div>
+    </div>
+    <div class="hero-visual reveal">
+        <div class="portrait-orbit" aria-hidden="true"></div>
+        <figure class="portrait-frame">
+            <img src="assets/hakan-portrait.jpg" alt="Hakan Berat Demircan" width="720" height="713" fetchpriority="high" />
+            <figcaption><span>Hakan Berat Demircan</span><span>@T("PortraitCaption")</span></figcaption>
+        </figure>
+        <div class="hero-stack" aria-label="@T("TechnologyStack")"><span class="stack-monogram">C<span>#</span></span><div><strong>@T("NetEcosystem")</strong><span>@T("PlatformTrio")</span></div><Icon Name="code" /></div>
+        <span class="portrait-side-note" aria-hidden="true">@T("HeroSideNote")</span>
+    </div>
+</section>
+
+<section class="expertise-section reveal" aria-labelledby="expertise-title">
+    <div class="section-top"><div><p class="section-kicker">@T("ExpertiseKicker")</p><h2 id="expertise-title">@T("ExpertiseTitle")</h2></div><span class="section-note">C# / .NET</span></div>
+    <div class="expertise-grid">
+        @foreach (var area in Expertise)
+        {
+            <article class="expertise-card"><Icon Name="@area.Icon" /><h3>@T(area.Key)</h3><p>@area.Tech</p></article>
+        }
+    </div>
+    <ul class="expertise-list" aria-label="@T("TechnologyStack")">
+        @foreach (var tech in new[] { "C#", ".NET 10", "ASP.NET Core", "Blazor", "SQL Server", ".NET MAUI", "WPF", "Dapper", "Entity Framework Core", "SQLite", "MVVM", "REST API" }) { <li>@tech</li> }
+    </ul>
+</section>
+
+<section class="portfolio-section" aria-labelledby="featured-title">
+    <SectionHeading Id="featured-title" KickerKey="SoftwarePortfolioLabel" TitleKey="FeaturedSoftware" Href="projects" LinkKey="AllSoftware" />
+    <div class="featured-software-grid">
+        @foreach (var project in ProjectCatalog.All.Where(p => p.Featured)) { <ProjectCard Project="project" Compact="true" /> }
+    </div>
+</section>
+
+<section class="portfolio-section" aria-labelledby="background-title">
+    <SectionHeading Id="background-title" KickerKey="MeetHakan" TitleKey="BackgroundTitle" />
+    <div class="background-bento">
+        <article class="background-intro reveal"><p>@T("AboutPortfolioText")</p><p>@T("AboutPortfolioSecond")</p><a class="text-link" href="experience">@T("ViewExperience")</a></article>
+        <a class="fact-card reveal" href="research"><Icon Name="book" /><strong>@T("PhD")<span class="accent-period">.</span></strong><h3>@T("TourismManagement")</h3><p>@T("PhDMeta")</p><span class="card-action">@T("Research")</span></a>
+        <a class="fact-card reveal" href="experience"><Icon Name="briefcase" /><strong>10<span class="accent-period">+</span></strong><h3>@T("BusinessExperience")</h3><p>@T("BusinessYears")</p><span class="card-action">@T("Experience")</span></a>
+        <a class="fact-card reveal" href="awards"><Icon Name="award" /><strong>04<span class="accent-period">.</span></strong><h3>@T("InternationalAwards")</h3><p>@T("UnderwaterAwards")</p><span class="card-action">@T("Awards")</span></a>
+        <a class="creative-teaser reveal" href="creative"><img src="assets/underwater-hero.jpg" alt="@T("HeroSeaAlt")" width="1536" height="1024" loading="lazy" /><div><p class="section-kicker">@T("HeroImageCaption")</p><h3>@T("FocusCreative")</h3><p>@T("FocusCreativeText")</p><span class="card-action">@T("AllCreative")</span></div></a>
+    </div>
+</section>
+<ContactCallout />
+
+@code {
+    private static readonly (string Icon, string Key, string Tech)[] Expertise = [
+        ("web", "WebDevelopment", "ASP.NET Core · Blazor"),
+        ("desktop", "DesktopDevelopment", "WPF · MVVM"),
+        ("mobile", "MobileDevelopment", ".NET MAUI · Android"),
+        ("database", "DataDevelopment", "SQL Server · Dapper · EF Core")
+    ];
+}

@@ -1,0 +1,47 @@
+﻿@page "/projects"
+@inherits LocalizedComponent
+@using HakanBeratDemircan.Services
+@using System.Globalization
+
+<PageTitle>@T("Projects") | Hakan Berat Demircan</PageTitle>
+<section class="software-projects">
+    <PageIntro TitleKey="Projects" DescriptionKey="ProjectsIntro" KickerKey="SoftwarePortfolioLabel" Icon="code" />
+    <div class="projects-toolbar reveal">
+        <div class="projects-search-wrapper">
+            <label class="visually-hidden" for="projects-search">@T("SearchProjects")</label>
+            <Icon Name="search" />
+            <input id="projects-search" class="projects-search" type="search" placeholder="@T("SearchPlaceholder")" @bind="searchTerm" @bind:event="oninput" />
+        </div>
+        <div class="project-filters" role="group" aria-label="@T("ProjectCategories")">
+            @foreach (var category in categories)
+            {
+                <button type="button" class="project-filter @(selectedCategory == category ? "selected" : "")" aria-pressed="@(selectedCategory == category)" @onclick="() => selectedCategory = category">@T("Category_" + category)</button>
+            }
+        </div>
+    </div>
+    <div class="projects-results"><p aria-live="polite" aria-atomic="true">@FilteredProjects.Count @T("ProjectResults")</p><span>@ProjectCatalog.All.Count @T("TotalProjects")</span></div>
+    @if (FilteredProjects.Count == 0)
+    {
+        <div class="projects-empty"><Icon Name="search" /><p>@T("NoProjectsFound")</p><button class="btn-secondary" type="button" @onclick="ClearFilters">@T("ClearFilters")</button></div>
+    }
+    else
+    {
+        <div class="projects-grid">
+            @foreach (var project in FilteredProjects) { <ProjectCard @key="project.Name" Project="project" /> }
+        </div>
+    }
+</section>
+<ContactCallout />
+
+@code {
+    private string searchTerm = "";
+    private string selectedCategory = "all";
+    private static readonly string[] categories = ["all", "web", "pwa", "desktop", "mobile", "legacy"];
+    private IReadOnlyList<PortfolioProject> FilteredProjects => ProjectCatalog.All.Where(project =>
+        (selectedCategory == "all" || project.Category == selectedCategory) &&
+        (string.IsNullOrWhiteSpace(searchTerm) || Matches(project.Name) ||
+         Matches(T(project.DescriptionKey + "Problem")) || Matches(T(project.DescriptionKey)) ||
+         project.Technologies.Any(Matches))).ToList();
+    private bool Matches(string text) => CultureInfo.GetCultureInfo(Language.CurrentLanguage).CompareInfo.IndexOf(text, searchTerm.Trim(), CompareOptions.IgnoreCase | CompareOptions.IgnoreNonSpace) >= 0;
+    private void ClearFilters() { selectedCategory = "all"; searchTerm = ""; }
+}
